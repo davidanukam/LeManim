@@ -14,10 +14,30 @@ class TwoSum(Scene):
         
         prevMap = nums.copy()
         
-        self.play(prevMap.animate.shift(DOWN * 1.5))
+        self.play(prevMap.animate.shift(DOWN * 2))
         
         numText = Text("nums").next_to(nums, LEFT)
         self.play(Write(numText))
+        
+        num1 = Text("16").move_to(nums[0], ORIGIN)
+        num2 = Text("8").move_to(nums[1], ORIGIN)
+        num3 = Text("23").move_to(nums[2], ORIGIN)
+        num4 = Text("4").move_to(nums[3], ORIGIN)
+        num5 = Text("15").move_to(nums[4], ORIGIN)
+        
+        self.play(Write(num1))
+        self.play(Write(num2))
+        self.play(Write(num3))
+        self.play(Write(num4))
+        self.play(Write(num5))
+        
+        targetText = Text("target:").shift(DOWN * 2)
+        self.play(Write(targetText))
+        
+        target = Text("19").next_to(targetText, RIGHT)
+        self.play(Write(target))
+        
+        self.play(targetText.animate.shift(RIGHT * 4, UP * 4), target.animate.shift(RIGHT * 4, UP * 4))
         
         self.wait()
 

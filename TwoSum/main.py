@@ -4,76 +4,119 @@ from manim import *
 class TwoSum(Scene):
     def construct(self):
         self.camera.background_color = "#1f1e2e"
-        title = Text("Two Sum", font_size=40).scale(2)
 
-        rec1 = Rectangle(WHITE, 1.5, 5).scale(2).set_fill(color="#0A0A0F", opacity=0)
-        nums_temp_label = Tex("nums").scale(2).shift(LEFT * 2.85, DOWN * 0.05)
-        nums_label = Tex("nums = [2, 1, 5, 3]").scale(2)
-        target_label = Tex("target = 4").scale(2).shift(DOWN)
-
-        arrow1 = (
-            Arrow(start=DOWN, end=UP, buff=0.5)
-            .next_to(nums_label, DOWN)
-            .shift(RIGHT * 1.35)
-            .set_fill(PURE_RED)
-            .set_color(PURE_RED)
-        )
-
-        arrow2 = (
-            Arrow(start=DOWN, end=UP, buff=0.5)
-            .next_to(nums_label, DOWN)
-            .shift(RIGHT * 3.65)
-            .set_fill(PURE_BLUE)
-            .set_color(PURE_BLUE)
-        )
-
-        self.play(Write(title))
-        self.play(title.animate.scale(0.5).to_edge(UP), Create(rec1))
-
-        self.play(rec1.animate.set_fill(color="#0A0A0F", opacity=1), Write(nums_label))
-        self.play(Create(arrow1), Create(arrow2))
-
-        temp_s = (
-            Square(2)
-            .set_fill("#0A0A0F", 1)
-            .set_color("#0A0A0F")
-            .shift(LEFT * 3)
-            .scale(1.25)
-        )
-        self.add(temp_s, nums_temp_label)
-        self.play(FadeOut(arrow1), FadeOut(arrow2), Indicate(nums_temp_label))
-        self.remove(temp_s, nums_temp_label)
-
-        indi_circle = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 1.375)
-        indi_circle2 = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 3.55)
-        self.play(Create(indi_circle), Create(indi_circle2))
-        self.play(Indicate(indi_circle, color=None), Indicate(indi_circle2, color=None))
-        self.play(FadeOut(indi_circle), FadeOut(indi_circle2))
-
-        nums_label_group_1 = VGroup(rec1, nums_label)
-        self.play(FadeOut(title), nums_label_group_1.animate.shift(UP * 2))
-
-        num1 = Tex("1").shift(RIGHT * 1.4).scale(2).shift(UP * 2.075)
-        num3 = Tex("3").shift(RIGHT * 3.6).scale(2).shift(UP * 2.075)
-
-        num_group1 = VGroup(num1, num3)
-
-        self.add(num1, num3)
+        # Intro
+        question_mark_left = Text("?", font_size=50, color=PURE_RED).scale(2).shift(LEFT * 1.5)
+        question_mark = Text("?", font_size=50).scale(5).shift(DOWN * 6)
+        question_mark_right = Text("?", font_size=50, color=PURE_BLUE).scale(2.5).shift(RIGHT * 1.5)
+        self.add(question_mark)
+        self.play(Write(question_mark_left))
+        self.play(Write(question_mark_right))
         self.play(
-            num1.animate.shift(DOWN * 3.075, LEFT * 3),
-            num3.animate.shift(DOWN * 3.075, LEFT * 3),
+            question_mark.animate.move_to(ORIGIN),
+            question_mark_left.animate.shift(LEFT).scale(2).rotate(0.436332),  # 25 deg
+            question_mark_right.animate.shift(RIGHT)
+            .scale(1.5)
+            .rotate(-0.523599),  # -30 deg
         )
-
-        sum1 = Tex("1 + 3 = ").scale(2).move_to(num_group1)
-        ans1 = Tex("4").scale(2).next_to(sum1, RIGHT)
-
-        self.play(ReplacementTransform(num_group1, sum1))
-        self.play(Write(ans1))
-        self.play(Indicate(ans1))
-        self.play(FadeOut(sum1))
-        self.play(ReplacementTransform(ans1, target_label))
-
         self.wait()
+
+        list_of_nums = Text("[2, 1, 5, 3]").scale(3)
+        self.play(
+            ReplacementTransform(question_mark, list_of_nums),
+            FadeOut(question_mark_left),
+            FadeOut(question_mark_right),
+        )
+        self.play(Indicate(list_of_nums))
+        self.wait()
+        self.play(list_of_nums.animate.shift(UP * 2))
+
+        x_plus_y = MathTex("x + y = 4").scale(3).shift(DOWN)
+        self.play(Write(x_plus_y))
+        self.wait()
+
+        pause = (
+            Triangle(color=WHITE)
+            .set_fill(WHITE, 1)
+            .set_opacity(0.5)
+            .shift(RIGHT * 0.25)
+            .scale(2)
+            .rotate(-PI / 2)
+        )  # -90 deg
+        self.play(GrowFromCenter(pause))
+
+        # title = Text("Two Sum", font_size=40).scale(2)
+
+        # rec1 = Rectangle(WHITE, 1.5, 5).scale(2).set_fill(color="#0A0A0F", opacity=0)
+        # nums_temp_label = Tex("nums").scale(2).shift(LEFT * 2.85, DOWN * 0.05)
+        # nums_label = Tex("nums = [2, 1, 5, 3]").scale(2)
+        # target_label = Tex("target = 4").scale(2).shift(DOWN)
+
+        # arrow1 = (
+        #     Arrow(start=DOWN, end=UP, buff=0.5)
+        #     .next_to(nums_label, DOWN)
+        #     .shift(RIGHT * 1.35)
+        #     .set_fill(PURE_RED)
+        #     .set_color(PURE_RED)
+        # )
+
+        # arrow2 = (
+        #     Arrow(start=DOWN, end=UP, buff=0.5)
+        #     .next_to(nums_label, DOWN)
+        #     .shift(RIGHT * 3.65)
+        #     .set_fill(PURE_BLUE)
+        #     .set_color(PURE_BLUE)
+        # )
+
+        # self.play(Write(title))
+        # self.play(title.animate.scale(0.5).to_edge(UP), Create(rec1))
+
+        # self.play(rec1.animate.set_fill(color="#0A0A0F", opacity=1), Write(nums_label))
+        # self.play(Create(arrow1), Create(arrow2))
+
+        # temp_s = (
+        #     Square(2)
+        #     .set_fill("#0A0A0F", 1)
+        #     .set_color("#0A0A0F")
+        #     .shift(LEFT * 3)
+        #     .scale(1.25)
+        # )
+        # self.add(temp_s, nums_temp_label)
+        # self.play(FadeOut(arrow1), FadeOut(arrow2), Indicate(nums_temp_label))
+        # self.remove(temp_s, nums_temp_label)
+
+        # indi_circle = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 1.375)
+        # indi_circle2 = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 3.55)
+        # self.play(Create(indi_circle), Create(indi_circle2))
+        # self.play(Indicate(indi_circle, color=None), Indicate(indi_circle2, color=None))
+        # self.play(FadeOut(indi_circle), FadeOut(indi_circle2))
+
+        # nums_label_group_1 = VGroup(rec1, nums_label)
+        # self.play(FadeOut(title), nums_label_group_1.animate.shift(UP * 2))
+
+        # num1 = Tex("1").shift(RIGHT * 1.4).scale(2).shift(UP * 2.075)
+        # num3 = Tex("3").shift(RIGHT * 3.6).scale(2).shift(UP * 2.075)
+
+        # num_group1 = VGroup(num1, num3)
+
+        # self.add(num1, num3)
+        # self.play(
+        #     num1.animate.shift(DOWN * 3.075, LEFT * 3),
+        #     num3.animate.shift(DOWN * 3.075, LEFT * 3),
+        # )
+
+        # sum1 = Tex("1 + 3 = ").scale(2).move_to(num_group1)
+        # ans1 = Tex("4").scale(2).next_to(sum1, RIGHT)
+
+        # self.play(ReplacementTransform(num_group1, sum1))
+        # self.play(Write(ans1))
+        # self.play(Indicate(ans1))
+        # self.play(FadeOut(sum1))
+        # self.play(ReplacementTransform(ans1, target_label))
+
+        # self.wait()
+
+        # NOTE: Later
         # self.play(num1.animate.shift(DOWN * 2), num3.animate.shift(DOWN * 2))
 
         # # Create Array Visual

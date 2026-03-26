@@ -1,5 +1,5 @@
 # TwoSum
 
 ```bash
-manim render main.py TwoSum -p
+python render.py
 ```

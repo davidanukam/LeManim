@@ -3,12 +3,28 @@ from manim import *
 
 class TwoSum(Scene):
     def construct(self):
+        # Inside your Manim Scene
+        # self.add_sound("TwoSum.mp3")
         self.camera.background_color = "#1f1e2e"
 
         # Intro
-        question_mark_left = Text("?", font_size=50, color=PURE_RED).scale(2).shift(LEFT * 1.5)
+        question_mark_left = (
+            Text("?", font_size=50)
+            .scale(2)
+            .shift(LEFT * 1.5)
+            .set_fill(opacity=0)
+            .set_stroke(color=WHITE, width=2)
+        )
         question_mark = Text("?", font_size=50).scale(5).shift(DOWN * 6)
-        question_mark_right = Text("?", font_size=50, color=PURE_BLUE).scale(2.5).shift(RIGHT * 1.5)
+        question_mark_right = (
+            Text("?", font_size=50)
+            .scale(2.5)
+            .shift(RIGHT * 1.5)
+            .set_fill(opacity=0)
+            .set_stroke(color=WHITE, width=2)
+        )
+
+        # Draw question marks onto screen
         self.add(question_mark)
         self.play(Write(question_mark_left))
         self.play(Write(question_mark_right))
@@ -21,6 +37,7 @@ class TwoSum(Scene):
         )
         self.wait()
 
+        # Transform question mark to list of numbers
         list_of_nums = Text("[2, 1, 5, 3]").scale(3)
         self.play(
             ReplacementTransform(question_mark, list_of_nums),
@@ -31,10 +48,12 @@ class TwoSum(Scene):
         self.wait()
         self.play(list_of_nums.animate.shift(UP * 2))
 
+        # Create target equation
         x_plus_y = MathTex("x + y = 4").scale(3).shift(DOWN)
         self.play(Write(x_plus_y))
         self.wait()
 
+        # Add pause icon
         pause = (
             Triangle(color=WHITE)
             .set_fill(WHITE, 1)

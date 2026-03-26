@@ -1,52 +1,168 @@
 from manim import *
 
+
 class TwoSum(Scene):
     def construct(self):
-        a = Square(2).shift(LEFT * 4)
-        b = a.copy().shift(RIGHT * 2)
-        c = b.copy().shift(RIGHT * 2)
-        d = c.copy().shift(RIGHT * 2)
-        e = d.copy().shift(RIGHT * 2)
-        nums = VGroup(a, b, c, d, e)
-        self.play(Write(nums))
-        self.play(nums.animate.scale(0.5))
-        self.play(nums.animate.shift(UP * 2))
-        
-        prevMap = nums.copy()
-        
-        self.play(prevMap.animate.shift(DOWN * 2))
-        
-        numText = Text("nums").next_to(nums, LEFT)
-        self.play(Write(numText))
-        
-        num1 = Text("16").move_to(nums[0], ORIGIN)
-        num2 = Text("8").move_to(nums[1], ORIGIN)
-        num3 = Text("23").move_to(nums[2], ORIGIN)
-        num4 = Text("4").move_to(nums[3], ORIGIN)
-        num5 = Text("15").move_to(nums[4], ORIGIN)
-        
-        self.play(Write(num1))
-        self.play(Write(num2))
-        self.play(Write(num3))
-        self.play(Write(num4))
-        self.play(Write(num5))
-        
-        targetText = Text("target:").shift(DOWN * 2)
-        self.play(Write(targetText))
-        
-        target = Text("19").next_to(targetText, RIGHT)
-        self.play(Write(target))
-        
-        self.play(targetText.animate.shift(RIGHT * 4, UP * 4), target.animate.shift(RIGHT * 4, UP * 4))
-        
+        self.camera.background_color = "#1f1e2e"
+        title = Text("Two Sum", font_size=40).scale(2)
+
+        rec1 = Rectangle(WHITE, 1.5, 5).scale(2).set_fill(color="#0A0A0F", opacity=0)
+        nums_temp_label = Tex("nums").scale(2).shift(LEFT * 2.85, DOWN * 0.05)
+        nums_label = Tex("nums = [2, 1, 5, 3]").scale(2)
+        target_label = Tex("target = 4").scale(2).shift(DOWN)
+
+        arrow1 = (
+            Arrow(start=DOWN, end=UP, buff=0.5)
+            .next_to(nums_label, DOWN)
+            .shift(RIGHT * 1.35)
+            .set_fill(PURE_RED)
+            .set_color(PURE_RED)
+        )
+
+        arrow2 = (
+            Arrow(start=DOWN, end=UP, buff=0.5)
+            .next_to(nums_label, DOWN)
+            .shift(RIGHT * 3.65)
+            .set_fill(PURE_BLUE)
+            .set_color(PURE_BLUE)
+        )
+
+        self.play(Write(title))
+        self.play(title.animate.scale(0.5).to_edge(UP), Create(rec1))
+
+        self.play(rec1.animate.set_fill(color="#0A0A0F", opacity=1), Write(nums_label))
+        self.play(Create(arrow1), Create(arrow2))
+
+        temp_s = (
+            Square(2)
+            .set_fill("#0A0A0F", 1)
+            .set_color("#0A0A0F")
+            .shift(LEFT * 3)
+            .scale(1.25)
+        )
+        self.add(temp_s, nums_temp_label)
+        self.play(FadeOut(arrow1), FadeOut(arrow2), Indicate(nums_temp_label))
+        self.remove(temp_s, nums_temp_label)
+
+        indi_circle = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 1.375)
+        indi_circle2 = Circle(0.3, PURE_RED).scale(2).shift(RIGHT * 3.55)
+        self.play(Create(indi_circle), Create(indi_circle2))
+        self.play(Indicate(indi_circle, color=None), Indicate(indi_circle2, color=None))
+        self.play(FadeOut(indi_circle), FadeOut(indi_circle2))
+
+        nums_label_group_1 = VGroup(rec1, nums_label)
+        self.play(FadeOut(title), nums_label_group_1.animate.shift(UP * 2))
+
+        num1 = Tex("1").shift(RIGHT * 1.4).scale(2).shift(UP * 2.075)
+        num3 = Tex("3").shift(RIGHT * 3.6).scale(2).shift(UP * 2.075)
+
+        num_group1 = VGroup(num1, num3)
+
+        self.add(num1, num3)
+        self.play(
+            num1.animate.shift(DOWN * 3.075, LEFT * 3),
+            num3.animate.shift(DOWN * 3.075, LEFT * 3),
+        )
+
+        sum1 = Tex("1 + 3 = ").scale(2).move_to(num_group1)
+        ans1 = Tex("4").scale(2).next_to(sum1, RIGHT)
+
+        self.play(ReplacementTransform(num_group1, sum1))
+        self.play(Write(ans1))
+        self.play(Indicate(ans1))
+        self.play(FadeOut(sum1))
+        self.play(ReplacementTransform(ans1, target_label))
+
         self.wait()
+        # self.play(num1.animate.shift(DOWN * 2), num3.animate.shift(DOWN * 2))
 
-# class Solution:
-#     def twoSum(self, nums: List[int], target: int) -> List[int]:
-#         prevMap = {}  # val -> index
+        # # Create Array Visual
+        # nums = [2, 1, 5, 3]
+        # array_boxes = (
+        #     VGroup(*[Square(side_length=1) for _ in range(len(nums))])
+        #     .arrange(RIGHT, buff=0.1)
+        #     .shift(UP * 0.5)
+        # )
+        # array_vals = VGroup(*[Text(str(n)) for n in nums])
+        # for i, val in enumerate(array_vals):
+        #     val.move_to(array_boxes[i].get_center())
 
-#         for i, n in enumerate(nums):
-#             diff = target - n
-#             if diff in prevMap:
-#                 return [prevMap[diff], i]
-#             prevMap[n] = i
+        # indices = VGroup(
+        #     *[Text(str(i), font_size=20, color=GRAY) for i in range(len(nums))]
+        # )
+        # for i, index in enumerate(indices):
+        #     index.next_to(array_boxes[i], DOWN, buff=0.1)
+
+        # self.play(Create(array_boxes), Write(array_vals), Write(indices))
+
+        # # Hash Map Setup
+        # hash_map_title = Text(
+        #     "prevMap {val : index}", font_size=28, color=YELLOW
+        # ).shift(LEFT * 3 + DOWN * 1.5)
+        # hash_map_box = Rectangle(height=2, width=4).next_to(hash_map_title, DOWN)
+        # map_content = VGroup().move_to(hash_map_box.get_center())
+
+        # self.play(Create(hash_map_box), Write(hash_map_title))
+
+        # # Logic Display
+        # calc_text = Text("Complement = target - n", font_size=24).shift(
+        #     RIGHT * 3 + DOWN * 1
+        # )
+        # calc_val = Text("", font_size=30, color=BLUE).next_to(calc_text, DOWN)
+
+        # self.play(Write(calc_text))
+
+        # # Iteration Pointer
+        # pointer = Arrow(UP, DOWN, color=RED).scale(0.5).next_to(array_boxes[0], UP)
+
+        # # Step through logic
+        # target = 4
+        # prevMap = {}
+
+        # for i, n in enumerate(nums):
+        #     self.play(pointer.animate.next_to(array_boxes[i], UP))
+
+        #     diff = target - n
+        #     new_calc_val = Text(
+        #         f"{target} - {n} = {diff}", font_size=30, color=BLUE
+        #     ).move_to(calc_val)
+
+        #     self.play(Transform(calc_val, new_calc_val))
+        #     self.wait(1)
+
+        #     if diff in prevMap:
+        #         # Success state
+        #         self.play(Indicate(array_boxes[i], color=GREEN))
+        #         # Highlight the found complement in the map
+        #         match_text = [m for m in map_content if f"{diff}:" in m.text][0]
+        #         self.play(Indicate(match_text, color=GREEN))
+
+        #         success_msg = Text("Match Found!", color=GREEN).shift(DOWN * 3)
+        #         self.play(Write(success_msg))
+        #         self.wait(2)
+        #         break
+        #     else:
+        #         # Add to map
+        #         prevMap[n] = i
+        #         new_entry = Text(f"{n}: {i}", font_size=24).arrange(RIGHT)
+
+        #         if len(map_content) == 0:
+        #             new_entry.move_to(hash_map_box.get_top() + DOWN * 0.4)
+        #         else:
+        #             new_entry.next_to(map_content, DOWN, buff=0.2)
+
+        #         map_content.add(new_entry)
+        #         self.play(Write(new_entry))
+        #         self.wait(1)
+
+        # self.play(FadeOut(pointer), FadeOut(calc_text), FadeOut(calc_val))
+
+        # # Complexity Summary
+        # complexity = (
+        #     VGroup(Text("Time: O(n)", color=GOLD), Text("Space: O(n)", color=GOLD))
+        #     .arrange(DOWN)
+        #     .to_edge(RIGHT, buff=1)
+        # )
+
+        # self.play(Write(complexity))
+        self.wait(3)

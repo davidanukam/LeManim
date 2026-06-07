@@ -1,4 +1,3 @@
 .vscode/
 __pycache__/
 media/
-helper_methods.py

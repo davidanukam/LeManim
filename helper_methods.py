@@ -18,8 +18,8 @@ LABEL_GRAY = "#888888"
 WHITE = "#FFFFFF"
 
 # - Constants - #
-MONO = "monospace"
-ARIAL = "arial"
+MONO = "Monospace"
+ARIAL = "Arial"
 
 
 class Explainer(Scene):
@@ -43,7 +43,7 @@ class Explainer(Scene):
             spaced,
             font_size=size,
             color=color,
-            font="Monospace",
+            font=MONO,
             weight=weight,
         )
 
@@ -68,7 +68,7 @@ class Explainer(Scene):
             fill_opacity=1,
         )
         label = self.spaced_caps(label_text, size=14, color=label_color)
-        main = Text(main_text, font_size=36, color=WHITE, weight=BOLD)
+        main = Text(main_text, font=MONO, font_size=36, color=WHITE, weight=BOLD)
         content = VGroup(label, main).arrange(DOWN, buff=0.25)
         content.move_to(box.get_center())
         return VGroup(box, content)
@@ -87,7 +87,7 @@ class Explainer(Scene):
             fill_color=fill_color,
             fill_opacity=1,
         )
-        num_text = Text(number, font_size=20, color=num_color, font="Monospace")
+        num_text = Text(number, font_size=20, color=num_color, font=MONO)
         lbl_text = Text(label_text, font_size=24, color=WHITE, weight=BOLD)
         num_text.move_to(box.get_left() + RIGHT * 0.7)
         lbl_text.move_to(box.get_center() + RIGHT * 0.3)
@@ -119,7 +119,7 @@ class Explainer(Scene):
     def corner_label(self, text, color=LABEL_GRAY, size=16):
         """Small top-left scene label, pinned to upper-left edge.
         Used in UUID and render-text videos to name the current section."""
-        lbl = Text(text, font_size=size, color=color, font="Monospace")
+        lbl = Text(text, font_size=size, color=color, font=MONO)
         lbl.to_corner(UL, buff=0.55)
         return lbl
 
@@ -130,16 +130,21 @@ class Explainer(Scene):
         part2 = Text(rest, font_size=size, color=WHITE, weight=BOLD)
         return VGroup(part1, part2).arrange(RIGHT, buff=0.3)
 
-    def narrator_line(self, text, size=38, color=WHITE, corner=DL, buff=1.2):
-        """Lowercase italic-feel narrator sentence anchored to a corner.
-        Mirrors the 'sounds almost insultingly simple' pattern in main.py."""
-        t = Text(text, font_size=size, color=color)
-        t.to_corner(corner, buff=buff)
+    # def narrator_line(self, text, size=38, color=WHITE, corner=DL, buff=1.2):
+    #     """Lowercase italic-feel narrator sentence anchored to a corner.
+    #     Mirrors the 'sounds almost insultingly simple' pattern in main.py."""
+    #     t = Text(text, font_size=size, color=color)
+    #     t.to_corner(corner, buff=buff)
+    #     return t
+
+    def narrator_line(self, text, font=MONO, size=38, color=WHITE):
+        """Narrator sentence to expressed with text."""
+        t = Text(text, font=font, font_size=size, color=color)
         return t
 
     def mono_string(self, text, size=32, color=WHITE):
         """Plain monospace string — UUIDs, hashes, code values."""
-        return Text(text, font_size=size, color=color, font="Monospace")
+        return Text(text, font_size=size, color=color, font=MONO)
 
     def token_highlight(
         self,
@@ -158,12 +163,12 @@ class Explainer(Scene):
         parts = []
         if before:
             parts.append(
-                Text(before, font_size=size, color=base_color, font="Monospace")
+                Text(before, font_size=size, color=base_color, font=MONO)
             )
-        parts.append(Text(middle, font_size=size, color=accent_color, font="Monospace"))
+        parts.append(Text(middle, font_size=size, color=accent_color, font=MONO))
         if after:
             parts.append(
-                Text(after, font_size=size, color=base_color, font="Monospace")
+                Text(after, font_size=size, color=base_color, font=MONO)
             )
         return VGroup(*parts).arrange(RIGHT, buff=0)
 
@@ -204,7 +209,7 @@ class Explainer(Scene):
             )
             size = 15 if is_header else 20
             weight = NORMAL
-            font = "Monospace" if col == accent_col and not is_header else ARIAL
+            font = MONO if col == accent_col and not is_header else ARIAL
             return Text(str(val), font_size=size, color=color, font=font, weight=weight)
 
         def _build_row(vals, is_header=False):
@@ -310,7 +315,7 @@ class Explainer(Scene):
         return nodes, lines
 
     def make_pipeline(self, steps, width=2.8, height=0.85, gap=0.7, active_index=None):
-        """Horizontal pipeline: [Step A] –– [Step B] –– [Step C].
+        """Horizontal pipeline: [Step A] -- [Step B] -- [Step C].
         active_index highlights one box. Returns VGroup (boxes + arrows)."""
         boxes = VGroup()
         for i, label in enumerate(steps):
@@ -387,7 +392,7 @@ class Explainer(Scene):
         track_color=BOX_STROKE,
     ):
         """Horizontal progress / bit-width bar.
-        fill_ratio is 0.0–1.0. Used in UUID video for byte-size comparisons."""
+        fill_ratio is 0.0-1.0. Used in UUID video for byte-size comparisons."""
         track = RoundedRectangle(
             corner_radius=0.09,
             width=width,
@@ -421,7 +426,7 @@ class Explainer(Scene):
         card_height=5.0,
     ):
         """Vertical fill bar inside a card (RAM / DISK style from UUID video).
-        pct is 0.0–1.0. Returns a VGroup card."""
+        pct is 0.0-1.0. Returns a VGroup card."""
         card = RoundedRectangle(
             corner_radius=0.15,
             width=card_width,
@@ -490,8 +495,8 @@ class Explainer(Scene):
 
         code_lines = VGroup()
         for i, line_text in enumerate(lines):
-            num = Text(str(i + 1), font_size=16, color=LABEL_GRAY, font="Monospace")
-            code = Text(line_text, font_size=18, color=WHITE, font="Monospace")
+            num = Text(str(i + 1), font_size=16, color=LABEL_GRAY, font=MONO)
+            code = Text(line_text, font_size=18, color=WHITE, font=MONO)
             row = VGroup(num, code).arrange(RIGHT, buff=0.4)
             code_lines.add(row)
         code_lines.arrange(DOWN, buff=0.28, aligned_edge=LEFT)

@@ -11,6 +11,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from manim import *
 from helper_methods import (
     Explainer,
+    MONO,
+    ARIAL,
     REDIS_RED,
     REDIS_PURP,
     PURP_FILL,
@@ -31,32 +33,32 @@ TARGET = 4
 
 ADD_SOUND = "--sound" in sys.argv
 AUDIO = "audio/TwoSum_Edited.mp3"
+AUDIO = "audio/TwoSum_1Min.wav"
 
 
 class TwoSum(Explainer):
     def construct(self):
         if ADD_SOUND:
             self.add_sound(AUDIO)
-        self.scene_01_problem_hook()
-        self.scene_02_pause_invite()
-        self.scene_03_answer_reveal()
-        self.scene_04_naive_vs_clever()
-        self.scene_05_brute_force_intro()
-        self.scene_06_brute_force_checks()
-        self.scene_07_scan_pattern()
-        self.scene_08_time_complexity()
-        self.scene_09_scale_problem()
-        self.scene_10_narrator_reframe()
-        self.scene_11_partner_concept()
-        self.scene_12_reframed_problem()
-        self.scene_13_hashmap_metaphor()
-        self.scene_14_build_as_you_go()
-        self.scene_15_hashmap_walkthrough()
-        self.scene_16_solution_found()
-        self.scene_17_one_pass_proof()
-        self.scene_18_complexity_comparison()
-        self.scene_19_space_complexity()
-        self.scene_20_outro()
+        self.problem_hook()
+        self.answer_reveal()
+        # self.naive_vs_clever()
+        # self.brute_force_intro()
+        # self.brute_force_checks()
+        # self.scan_pattern()
+        # self.time_complexity()
+        # self.scale_problem()
+        # self.narrator_reframe()
+        # self.partner_concept()
+        # self.reframed_problem()
+        # self.hashmap_metaphor()
+        # self.build_as_you_go()
+        # self.hashmap_walkthrough()
+        # self.solution_found()
+        # self.one_pass_proof()
+        # self.complexity_comparison()
+        # self.space_complexity()
+        # self.outro()
 
     # --- Two Sum visuals ---
 
@@ -72,15 +74,15 @@ class TwoSum(Explainer):
             fill_color=fill,
             fill_opacity=1,
         )
-        val = Text(str(value), font_size=32, color=WHITE, weight=BOLD)
+        val = Text(str(value), font=MONO, font_size=32, color=WHITE, weight=BOLD)
         val.move_to(box.get_center())
         grp = VGroup(box, val)
         if index is not None:
             idx_lbl = Text(
                 f"[{index}]",
+                font=MONO,
                 font_size=14,
                 color=LABEL_GRAY,
-                font="Monospace",
             )
             idx_lbl.next_to(box, DOWN, buff=0.15)
             grp.add(idx_lbl)
@@ -153,22 +155,23 @@ class TwoSum(Explainer):
         wall_lbl.next_to(hooks, UP, buff=0.35)
         return VGroup(wall_lbl, hooks)
 
-    # - SCENE 1 - Problem Hook
+    # - SCENE 1
 
-    def scene_01_problem_hook(self):
+    def problem_hook(self):
         tag = self.corner_label("TWO SUM · SETUP")
         title = self.two_tone_title("TWO", "SUM", accent_color=REDIS_PURP, size=44)
         title.to_edge(UP, buff=1.1)
 
         hook = self.narrator_line(
-            "a question that sounds almost insultingly simple",
+            "A question that sounds almost insultingly simple",
+            font="Inter",
             size=30,
-            color=LABEL_GRAY,
-            corner=DL,
-            buff=0.9,
+            color=WHITE,
         )
 
-        array_label = self.dot_label("GIVEN THIS LIST", dot_color=REDIS_PURP)
+        array_label = self.dot_label(
+            "GIVEN THIS LIST", dot_color=REDIS_PURP, text_color=WHITE
+        )
         array_row = self.make_array_row()
         array_grp = VGroup(array_label, array_row).arrange(DOWN, buff=0.45)
 
@@ -186,55 +189,46 @@ class TwoSum(Explainer):
         content.next_to(title, DOWN, buff=0.65)
 
         question = Text(
-            "find the two that add up to the target",
+            "GOAL: Find the two that add up to the target",
+            font=MONO,
             font_size=26,
             color=WHITE,
         )
-        question.next_to(content, DOWN, buff=0.65)
+        question.next_to(content, DOWN, buff=0.45)
 
-        self.play(FadeIn(tag), Write(title), run_time=1.4)
-        self.play(FadeIn(hook, shift=UP * 0.1), run_time=1.2)
-        self.play(FadeIn(array_label), run_time=0.6)
-        self.stagger_in(list(array_row), shift=DOWN * 0.12, lag=0.15, run_time=1.8)
-        self.play(FadeIn(target_box, shift=UP * 0.15), run_time=1.0)
-        self.write_then_hold(question, write_time=1.8, hold_time=3.0)
-        self.clear_scene()
-
-    # - SCENE 2 - Pause Invite
-
-    def scene_02_pause_invite(self):
-        tag = self.corner_label("YOUR TURN")
-
-        array_row = self.make_array_row()
-        array_row.shift(UP * 0.5)
-
-        pause_badge = self.make_badge("PAUSE · TAKE YOUR TIME", size=14)
-        pause_badge.next_to(array_row, DOWN, buff=0.7)
-
-        hint = Text(
-            "come back once you've found them",
-            font_size=26,
-            color=LABEL_GRAY,
+        self.play(
+            FadeIn(tag),
+            FadeIn(title, shift=UP * 0.1),
+            run_time=1.0,
         )
-        hint.next_to(pause_badge, DOWN, buff=0.45)
+        self.play(Write(hook), run_time=1.5)
+        self.hold(2)
+        self.play(FadeOut(hook), FadeIn(array_label), run_time=0.6)
+        self.stagger_in(list(array_row), shift=DOWN * 0.12, lag=0.15, run_time=1.0)
+        self.play(Write(question), run_time=1.0)
+        self.play(FadeIn(target_box, shift=UP * 0.15), run_time=0.8)
+        self.hold(1.0)
 
-        self.play(FadeIn(tag), FadeIn(array_row), run_time=1.2)
-        self.play(FadeIn(pause_badge, scale=0.9), run_time=1.0)
-        self.write_then_hold(hint, write_time=1.5, hold_time=7.0)
+        pause = (
+            Triangle(color=WHITE)
+            .set_fill(WHITE, 1)
+            .set_opacity(0.5)
+            .shift(RIGHT * 0.25)
+            .scale(2)
+            .rotate(-PI / 2)  # -90 deg
+        )
+        self.play(GrowFromCenter(pause), run_time=0.5)
+        self.hold(2)
         self.clear_scene()
 
-    # - SCENE 3 - Answer Reveal
+    # - SCENE 2
 
-    def scene_03_answer_reveal(self):
-        self.gap(10)
-
+    def answer_reveal(self):
         tag = self.corner_label("SPOILER")
         joke = self.narrator_line(
-            "obviously I'm joking — you chose 1 and 3",
+            "Obviously I'm joking!",
             size=30,
-            corner=DL,
-            buff=0.9,
-        )
+        ).shift(UP * 2)
 
         array_row = self.make_array_row()
         array_row.shift(UP * 0.6)
@@ -242,33 +236,42 @@ class TwoSum(Explainer):
         self.play(FadeIn(tag), FadeIn(array_row), run_time=1.0)
         self.play(FadeIn(joke, shift=UP * 0.1), run_time=1.5)
 
+        one = (
+            self.make_array_cell(1, 1, partner=True)
+            .move_to(array_row[1].get_center())
+            .scale(1.05)
+        )
+        three = (
+            self.make_array_cell(3, 3, partner=True)
+            .move_to(array_row[3].get_center())
+            .scale(1.05)
+        )
+
         self.play(
             Transform(
                 array_row[1],
-                self.make_array_cell(1, 1, partner=True),
+                one,
             ),
             Transform(
                 array_row[3],
-                self.make_array_cell(3, 3, partner=True),
+                three,
             ),
             run_time=1.2,
         )
 
         eq = Text("1  +  3  =  4", font_size=48, color=WHITE, weight=BOLD)
-        eq.next_to(array_row, DOWN, buff=0.9)
+        eq.next_to(array_row, DOWN, buff=0.5).shift(LEFT * 0.05)
         check = Text("✓", font_size=56, color=SUCCESS)
         check.next_to(eq, RIGHT, buff=0.5)
 
         self.play(Write(eq), run_time=1.2)
         self.play(FadeIn(check, scale=0.5), run_time=0.7)
-        self.hold(6.0)
+        self.hold(2.0)
         self.clear_scene()
 
-    # - SCENE 4 - Naive vs Clever
+    # - SCENE 3
 
-    def scene_04_naive_vs_clever(self):
-        self.gap(12)
-
+    def naive_vs_clever(self):
         tag = self.corner_label("WHY IT MATTERS")
         lead = Text(
             "how you find them matters enormously",
@@ -341,7 +344,9 @@ class TwoSum(Explainer):
         array_row = self.make_array_row(highlight_indices=[0])
         array_row.next_to(subtitle, DOWN, buff=0.85).shift(RIGHT * 0.3)
 
-        pointer = Text("start with 2 →", font_size=20, color=REDIS_PURP, font="Monospace")
+        pointer = Text(
+            "start with 2 →", font_size=20, color=REDIS_PURP, font="Monospace"
+        )
         pointer.next_to(array_row[0], UP, buff=0.3)
 
         self.play(FadeIn(tag), Write(header), run_time=1.2)
@@ -438,8 +443,12 @@ class TwoSum(Explainer):
             self.wait(0.65 if idx < len(checks) - 1 else 1.5)
             if idx < len(checks) - 1:
                 self.play(
-                    Transform(array_row[a], self.make_array_cell(ARRAY[a], a, active=False)),
-                    Transform(array_row[b], self.make_array_cell(ARRAY[b], b, active=False)),
+                    Transform(
+                        array_row[a], self.make_array_cell(ARRAY[a], a, active=False)
+                    ),
+                    Transform(
+                        array_row[b], self.make_array_cell(ARRAY[b], b, active=False)
+                    ),
                     run_time=0.3,
                 )
 
@@ -540,7 +549,9 @@ class TwoSum(Explainer):
         )
         card.shift(UP * 0.2)
 
-        formula = Text("n + (n−1) + (n−2) + … + 1  ≈  n²", font_size=24, color=LABEL_GRAY)
+        formula = Text(
+            "n + (n−1) + (n−2) + … + 1  ≈  n²", font_size=24, color=LABEL_GRAY
+        )
         formula.next_to(card, DOWN, buff=0.55)
 
         self.play(FadeIn(tag), FadeIn(card, shift=UP * 0.15), run_time=1.5)
@@ -620,7 +631,9 @@ class TwoSum(Explainer):
         self.gap(14)
 
         tag = self.corner_label("PARTNER")
-        header = self.spaced_caps("WHAT ARE YOU ACTUALLY LOOKING FOR?", size=14, color=LABEL_GRAY)
+        header = self.spaced_caps(
+            "WHAT ARE YOU ACTUALLY LOOKING FOR?", size=14, color=LABEL_GRAY
+        )
         header.next_to(tag, DOWN, buff=0.45).align_to(tag, LEFT)
 
         array_row = self.make_array_row(highlight_indices=[1])
@@ -644,7 +657,9 @@ class TwoSum(Explainer):
 
         self.play(FadeIn(tag), Write(header), run_time=1.2)
         self.play(FadeIn(array_row), run_time=0.9)
-        self.reveal_stack([known, eq, partner_def, partner_tag], item_pause=1.0, run_time=0.9)
+        self.reveal_stack(
+            [known, eq, partner_def, partner_tag], item_pause=1.0, run_time=0.9
+        )
         self.hold(9.0)
         self.clear_scene()
 
@@ -791,7 +806,10 @@ class TwoSum(Explainer):
         self.play(FadeIn(naive_pipe), run_time=1.0)
         self.play(FadeIn(problem), Write(warn), run_time=1.3)
         self.play(
-            Transform(naive_pipe, self.make_pipeline(["HANG ALL", "THEN ASK"], active_index=None)),
+            Transform(
+                naive_pipe,
+                self.make_pipeline(["HANG ALL", "THEN ASK"], active_index=None),
+            ),
             FadeIn(fix_pipe, shift=UP * 0.1),
             run_time=1.2,
         )
@@ -823,7 +841,9 @@ class TwoSum(Explainer):
         step_lbl = None
         step_anchor = wall.get_bottom() + DOWN * 0.55
 
-        self.play(FadeIn(tag), Write(header), FadeIn(array_row), FadeIn(wall), run_time=1.2)
+        self.play(
+            FadeIn(tag), Write(header), FadeIn(array_row), FadeIn(wall), run_time=1.2
+        )
 
         for i, (val, desc, filled) in enumerate(steps):
             idx = ARRAY.index(int(val))
@@ -855,7 +875,9 @@ class TwoSum(Explainer):
             self.play(
                 Transform(
                     array_row[idx],
-                    self.make_array_cell(ARRAY[idx], idx, active=False, partner=(i == 3)),
+                    self.make_array_cell(
+                        ARRAY[idx], idx, active=False, partner=(i == 3)
+                    ),
                 ),
                 run_time=0.4,
             )
@@ -938,7 +960,9 @@ class TwoSum(Explainer):
         ]
         rows = VGroup(
             *[
-                self.make_numbered_row(num, lbl, active=(i == 1), width=9.0, height=0.75)
+                self.make_numbered_row(
+                    num, lbl, active=(i == 1), width=9.0, height=0.75
+                )
                 for i, (num, lbl) in enumerate(steps)
             ]
         )
@@ -1034,7 +1058,9 @@ class TwoSum(Explainer):
 
         self.play(FadeIn(tag), Write(header), run_time=1.0)
         self.play(Write(space), run_time=1.0)
-        self.play(FadeIn(trade, shift=UP * 0.1), FadeIn(runtime, shift=UP * 0.1), run_time=1.3)
+        self.play(
+            FadeIn(trade, shift=UP * 0.1), FadeIn(runtime, shift=UP * 0.1), run_time=1.3
+        )
         self.write_then_hold(caption, write_time=1.2, hold_time=7.0)
         self.clear_scene()
 

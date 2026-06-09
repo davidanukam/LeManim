@@ -13,8 +13,8 @@ from helper_methods import (
     Explainer,
     MONO,
     ARIAL,
-    REDIS_RED,
-    REDIS_PURP,
+    RED,
+    PURP,
     PURP_FILL,
     PURP_LIGHT,
     BOX_FILL,
@@ -42,7 +42,7 @@ class TwoSum(Explainer):
             self.add_sound(AUDIO)
         self.problem_hook()
         self.answer_reveal()
-        # self.naive_vs_clever()
+        self.naive_vs_clever()
         # self.brute_force_intro()
         # self.brute_force_checks()
         # self.scan_pattern()
@@ -63,7 +63,7 @@ class TwoSum(Explainer):
     # --- Two Sum visuals ---
 
     def make_array_cell(self, value, index=None, active=False, partner=False):
-        stroke = REDIS_PURP if active else SUCCESS if partner else BOX_STROKE
+        stroke = PURP if active else SUCCESS if partner else BOX_STROKE
         fill = PURP_FILL if active else SUCCESS_FILL if partner else BOX_FILL
         box = RoundedRectangle(
             corner_radius=0.12,
@@ -107,7 +107,7 @@ class TwoSum(Explainer):
         return cells
 
     def make_hash_hook(self, value, filled=False, highlight=False):
-        stroke = REDIS_PURP if highlight else BOX_STROKE
+        stroke = PURP if highlight else BOX_STROKE
         fill = PURP_FILL if filled else BOX_FILL_ALT
         hook_box = RoundedRectangle(
             corner_radius=0.08,
@@ -156,10 +156,9 @@ class TwoSum(Explainer):
         return VGroup(wall_lbl, hooks)
 
     # - SCENE 1
-
     def problem_hook(self):
         tag = self.corner_label("TWO SUM · SETUP")
-        title = self.two_tone_title("TWO", "SUM", accent_color=REDIS_PURP, size=44)
+        title = self.two_tone_title("TWO", "SUM", accent_color=PURP, size=44)
         title.to_edge(UP, buff=1.1)
 
         hook = self.narrator_line(
@@ -170,7 +169,7 @@ class TwoSum(Explainer):
         )
 
         array_label = self.dot_label(
-            "GIVEN THIS LIST", dot_color=REDIS_PURP, text_color=WHITE
+            "GIVEN THIS LIST", dot_color=PURP, text_color=WHITE
         )
         array_row = self.make_array_row()
         array_grp = VGroup(array_label, array_row).arrange(DOWN, buff=0.45)
@@ -178,7 +177,7 @@ class TwoSum(Explainer):
         target_box = self.make_label_box(
             "TARGET",
             str(TARGET),
-            stroke_color=REDIS_PURP,
+            stroke_color=PURP,
             fill_color=PURP_FILL,
             label_color=PURP_LIGHT,
             width=3,
@@ -222,7 +221,6 @@ class TwoSum(Explainer):
         self.clear_scene()
 
     # - SCENE 2
-
     def answer_reveal(self):
         tag = self.corner_label("SPOILER")
         joke = self.narrator_line(
@@ -259,8 +257,20 @@ class TwoSum(Explainer):
             run_time=1.2,
         )
 
+        target_box = self.make_label_box(
+            "TARGET",
+            str(TARGET),
+            stroke_color=PURP,
+            fill_color=PURP_FILL,
+            label_color=PURP_LIGHT,
+            width=3,
+            height=1.6,
+        )
+        target_box.next_to(array_row, DOWN, buff=0.5).shift(LEFT * 0.05)
+        self.play(FadeIn(target_box, shift=UP * 0.15), run_time=0.8)
+
         eq = Text("1  +  3  =  4", font_size=48, color=WHITE, weight=BOLD)
-        eq.next_to(array_row, DOWN, buff=0.5).shift(LEFT * 0.05)
+        eq.next_to(target_box, DOWN, buff=0.5).shift(LEFT * 0.05)
         check = Text("✓", font_size=56, color=SUCCESS)
         check.next_to(eq, RIGHT, buff=0.5)
 
@@ -270,7 +280,6 @@ class TwoSum(Explainer):
         self.clear_scene()
 
     # - SCENE 3
-
     def naive_vs_clever(self):
         tag = self.corner_label("WHY IT MATTERS")
         lead = Text(
@@ -283,16 +292,16 @@ class TwoSum(Explainer):
         naive = self.make_label_box(
             "NAIVE",
             "chokes",
-            stroke_color=REDIS_RED,
+            stroke_color=RED,
             fill_color=SLOW_FILL,
-            label_color=REDIS_RED,
+            label_color=RED,
             width=3.5,
             height=2,
         )
         clever = self.make_label_box(
             "CLEVER",
             "breezes through",
-            stroke_color=REDIS_PURP,
+            stroke_color=PURP,
             fill_color=PURP_FILL,
             label_color=PURP_LIGHT,
             width=3.5,
@@ -331,7 +340,7 @@ class TwoSum(Explainer):
         self.gap(12)
 
         tag = self.corner_label("BRUTE FORCE")
-        header = self.spaced_caps("TRY EVERY COMBINATION", size=18, color=REDIS_RED)
+        header = self.spaced_caps("TRY EVERY COMBINATION", size=18, color=RED)
         header.next_to(tag, DOWN, buff=0.5).align_to(tag, LEFT)
 
         subtitle = Text(
@@ -345,7 +354,7 @@ class TwoSum(Explainer):
         array_row.next_to(subtitle, DOWN, buff=0.85).shift(RIGHT * 0.3)
 
         pointer = Text(
-            "start with 2 →", font_size=20, color=REDIS_PURP, font="Monospace"
+            "start with 2 →", font_size=20, color=PURP, font="Monospace"
         )
         pointer.next_to(array_row[0], UP, buff=0.3)
 
@@ -518,7 +527,7 @@ class TwoSum(Explainer):
                 arr = Arrow(
                     array_row[i].get_bottom() + DOWN * 0.05,
                     array_row[j].get_top() + UP * 0.05,
-                    color=REDIS_PURP,
+                    color=PURP,
                     stroke_width=1.5,
                     buff=0.08,
                     max_tip_length_to_length_ratio=0.15,
@@ -580,7 +589,7 @@ class TwoSum(Explainer):
             sub="comparisons",
             width=5.5,
             height=2.2,
-            stroke_color=REDIS_RED,
+            stroke_color=RED,
             fill_color=SLOW_FILL,
         )
 
@@ -679,7 +688,7 @@ class TwoSum(Explainer):
         new_q = self.make_label_box(
             "NEW QUESTION",
             "does partner exist?",
-            stroke_color=REDIS_PURP,
+            stroke_color=PURP,
             fill_color=PURP_FILL,
             label_color=PURP_LIGHT,
             width=4.2,
@@ -689,7 +698,7 @@ class TwoSum(Explainer):
         arrow = Arrow(
             old_q.get_right() + RIGHT * 0.08,
             new_q.get_left() + LEFT * 0.08,
-            color=REDIS_PURP,
+            color=PURP,
             stroke_width=2,
             buff=0.08,
             max_tip_length_to_length_ratio=0.12,
@@ -722,7 +731,7 @@ class TwoSum(Explainer):
         self.gap(14)
 
         tag = self.corner_label("HASH MAP")
-        header = self.spaced_caps("HOOKS ON A WALL", size=20, color=REDIS_PURP)
+        header = self.spaced_caps("HOOKS ON A WALL", size=20, color=PURP)
         header.next_to(tag, DOWN, buff=0.45).align_to(tag, LEFT)
 
         subtitle = Text(
@@ -753,8 +762,8 @@ class TwoSum(Explainer):
         self.play(Write(question), run_time=1.0)
         hook_3 = hooks[1][3]
         self.play(
-            hook_3[0].animate.set_stroke(REDIS_PURP, width=2.5),
-            hook_3[1].animate.set_color(REDIS_PURP),
+            hook_3[0].animate.set_stroke(PURP, width=2.5),
+            hook_3[1].animate.set_color(PURP),
             run_time=0.8,
         )
         self.play(Write(teleport), FadeIn(badge), run_time=1.2)
@@ -780,9 +789,9 @@ class TwoSum(Explainer):
         problem = self.make_label_box(
             "PROBLEM",
             "2 + 2 = 4",
-            stroke_color=REDIS_RED,
+            stroke_color=RED,
             fill_color=SLOW_FILL,
-            label_color=REDIS_RED,
+            label_color=RED,
             width=3.2,
             height=1.5,
         )
@@ -791,7 +800,7 @@ class TwoSum(Explainer):
         warn = Text(
             "same element twice — can't use the same 2",
             font_size=22,
-            color=REDIS_RED,
+            color=RED,
         )
         warn.next_to(problem, DOWN, buff=0.35)
 
@@ -822,7 +831,7 @@ class TwoSum(Explainer):
         self.gap(16)
 
         tag = self.corner_label("ONE PASS WALKTHROUGH")
-        header = self.spaced_caps("BUILD AS YOU GO", size=18, color=REDIS_PURP)
+        header = self.spaced_caps("BUILD AS YOU GO", size=18, color=PURP)
         header.next_to(tag, DOWN, buff=0.4).align_to(tag, LEFT)
 
         array_row = self.make_array_row()
@@ -927,7 +936,7 @@ class TwoSum(Explainer):
         elem_a = self.make_label_box(
             "ELEMENT A",
             "visited first",
-            stroke_color=REDIS_PURP,
+            stroke_color=PURP,
             fill_color=PURP_FILL,
             label_color=PURP_LIGHT,
             width=3.0,
@@ -995,7 +1004,7 @@ class TwoSum(Explainer):
             sub="~1 trillion ops at 1M elements",
             width=5.0,
             height=2.3,
-            stroke_color=REDIS_RED,
+            stroke_color=RED,
             fill_color=SLOW_FILL,
         )
         optimal = self.make_stat_callout(
@@ -1031,13 +1040,13 @@ class TwoSum(Explainer):
         header = self.spaced_caps("SPACE COMPLEXITY", size=18, color=LABEL_GRAY)
         header.next_to(tag, DOWN, buff=0.45).align_to(tag, LEFT)
 
-        space = Text("O(n)", font_size=64, color=REDIS_PURP, weight=BOLD)
+        space = Text("O(n)", font_size=64, color=PURP, weight=BOLD)
         space.next_to(header, DOWN, buff=0.55).shift(RIGHT * 0.5)
 
         trade = self.make_vertical_bar(
             "MEMORY",
             0.55,
-            fill_color=REDIS_PURP,
+            fill_color=PURP,
             label_color=PURP_LIGHT,
         )
         runtime = self.make_vertical_bar(

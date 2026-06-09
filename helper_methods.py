@@ -6,9 +6,9 @@ from manim import *
 
 # - Color Palette - #
 BG = "#141414"
-REDIS_RED = "#f83645"
-REDIS_PURP = "#7C3AED"
-REDIS_PURP_DARK = "#6D28D9"
+RED = "#f83645"
+PURP = "#7C3AED"
+PURP_DARK = "#6D28D9"
 PURP_FILL = "#3B2A6E"
 PURP_LIGHT = "#A78BFA"
 BOX_FILL = "#1E1E1E"
@@ -75,9 +75,9 @@ class Explainer(Scene):
 
     def make_numbered_row(self, number, label_text, active=False, width=8, height=0.9):
         """Horizontal numbered row like '01   PARSE SQL'."""
-        num_color = REDIS_PURP if active else LABEL_GRAY
+        num_color = PURP if active else LABEL_GRAY
         fill_color = PURP_FILL if active else BOX_FILL
-        stroke_col = REDIS_PURP if active else BOX_STROKE
+        stroke_col = PURP if active else BOX_STROKE
         box = RoundedRectangle(
             corner_radius=0.12,
             width=width,
@@ -109,7 +109,7 @@ class Explainer(Scene):
 
     # --- Text & Typography ---
 
-    def dot_label(self, text, dot_color=REDIS_PURP, size=16, text_color=LABEL_GRAY):
+    def dot_label(self, text, dot_color=PURP, size=16, text_color=LABEL_GRAY):
         """Inline dot + spaced-caps label: '• DEFAULT FOR DECADES'.
         Seen in the UUID video as scene context tags in the top-left or center."""
         dot = Text("•", font_size=size, color=dot_color)
@@ -123,7 +123,7 @@ class Explainer(Scene):
         lbl.to_corner(UL, buff=0.55)
         return lbl
 
-    def two_tone_title(self, accent_word, rest, accent_color=REDIS_PURP, size=48):
+    def two_tone_title(self, accent_word, rest, accent_color=PURP, size=48):
         """Big centered title with one accent-colored word then white text.
         E.g. two_tone_title('SUBPIXEL', 'RENDERING') → purple + white caps."""
         part1 = Text(accent_word, font_size=size, color=accent_color, weight=BOLD)
@@ -151,7 +151,7 @@ class Explainer(Scene):
         full_string,
         highlight_slice,
         base_color=LABEL_GRAY,
-        accent_color=REDIS_PURP,
+        accent_color=PURP,
         size=36,
     ):
         """Render a monospace string with one segment colored differently.
@@ -181,7 +181,7 @@ class Explainer(Scene):
         col_widths=None,
         row_height=0.55,
         accent_col=0,
-        accent_color=REDIS_PURP,
+        accent_color=PURP,
     ):
         """Database table with a header row and data rows.
         accent_col highlights that column's values (e.g. the ID column).
@@ -243,7 +243,7 @@ class Explainer(Scene):
         """Single B-tree node box with a centered label.
         Set active=True to highlight it (purple stroke + fill)."""
         if active:
-            stroke_color = REDIS_PURP
+            stroke_color = PURP
             fill_color = PURP_FILL
             label_color = PURP_LIGHT
         box = RoundedRectangle(
@@ -320,7 +320,7 @@ class Explainer(Scene):
         boxes = VGroup()
         for i, label in enumerate(steps):
             active = i == active_index
-            stroke = REDIS_PURP if active else BOX_STROKE
+            stroke = PURP if active else BOX_STROKE
             fill = PURP_FILL if active else BOX_FILL
             color = WHITE if active else LABEL_GRAY
             box = RoundedRectangle(
@@ -388,7 +388,7 @@ class Explainer(Scene):
         fill_ratio,
         width=5.0,
         height=0.18,
-        fill_color=REDIS_PURP,
+        fill_color=PURP,
         track_color=BOX_STROKE,
     ):
         """Horizontal progress / bit-width bar.
@@ -420,8 +420,8 @@ class Explainer(Scene):
         pct,
         bar_width=1.4,
         bar_height=3.5,
-        fill_color=REDIS_PURP,
-        label_color=REDIS_PURP,
+        fill_color=PURP,
+        label_color=PURP,
         card_width=2.4,
         card_height=5.0,
     ):
@@ -536,7 +536,7 @@ class Explainer(Scene):
         target,
         label_text,
         direction=UP,
-        color=REDIS_PURP,
+        color=PURP,
         buff=0.25,
         label_size=16,
     ):
@@ -554,7 +554,7 @@ class Explainer(Scene):
         self,
         text,
         fill_color=PURP_FILL,
-        stroke_color=REDIS_PURP,
+        stroke_color=PURP,
         text_color=PURP_LIGHT,
         size=18,
         h_pad=0.35,
